@@ -1,0 +1,29 @@
+name: Scheduled Redeploy
+
+on:
+  schedule:
+    # 每天凌晨 3 点触发一次
+    - cron: '0 */12 * * *'
+  workflow_dispatch:   # 允许手动触发
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "bot@example.com"
+          git config --global user.name "deploy-bot"
+
+      - name: Update timestamp file
+        run: |
+          echo "Last redeploy: $(date -u)" > last_deploy.txt
+          git add last_deploy.txt
+          git commit -m "Scheduled redeploy: update timestamp" || echo "No changes to commit"
+
+      - name: Push changes
+        run: git push origin main
