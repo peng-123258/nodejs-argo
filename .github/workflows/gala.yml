@@ -3,7 +3,7 @@ name: Scheduled Redeploy
 on:
   schedule:
     # 每天凌晨 3 点触发一次
-    - cron: '0 9 * * *'
+    - cron: '0 1 * * *'
   workflow_dispatch:   # 允许手动触发
 
 jobs:
